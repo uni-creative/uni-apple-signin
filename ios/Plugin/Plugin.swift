@@ -23,20 +23,20 @@ class GetAppleSignInHandler: NSObject, ASAuthorizationControllerDelegate {
 }
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
          // error.localizedDescription
-         //  print("Error - \(error.localizedDescription)")
+           print("Error - \(error.localizedDescription)")
         call.error(error.localizedDescription, error, [
              "message": error.localizedDescription
            ])
       }
       func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
           if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-             // print("User Id - \(appleIDCredential.user)")
-             // print("User Name - \(appleIDCredential.fullName?.description ?? "N/A")")
-             // print("User Email - \(appleIDCredential.email ?? "N/A")")
-             // print("Real User Status - \(appleIDCredential.realUserStatus.rawValue)")
+              print("User Id - \(appleIDCredential.user)")
+              print("User Name - \(appleIDCredential.fullName?.description ?? "N/A")")
+              print("User Email - \(appleIDCredential.email ?? "N/A")")
+              print("Real User Status - \(appleIDCredential.realUserStatus.rawValue)")
               if let identityTokenData = appleIDCredential.identityToken,
                   let theIdentityTokenString = String(data: identityTokenData, encoding: .utf8) {
-               //   print("Identity Token \(theIdentityTokenString)")
+                  print("Identity Token \(theIdentityTokenString)")
                   self.identityTokenString = theIdentityTokenString
               }
             var ret = JSObject()
@@ -50,7 +50,7 @@ class GetAppleSignInHandler: NSObject, ASAuthorizationControllerDelegate {
               // Sign in using an existing iCloud Keychain credential.
               let username = passwordCredential.user
               let password = passwordCredential.password
-             var ret = JSObject()
+            var ret = JSObject()
                       ret["username"] = username
                       ret["password"] = password
              call.success(ret)
@@ -75,6 +75,7 @@ public class UniAppleSignIn: CAPPlugin {
             "value": value
         ])
     }
+    
     @objc func doAppleLogin(_ call: CAPPluginCall) {
         call.save()
             DispatchQueue.main.async {
